@@ -1,0 +1,19 @@
+{
+  "name": "obfus-js",
+  "version": "1.0.0",
+  "description": "simple tool to obfuscate js files based on configuration file with input dir and output",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "js",
+    "obfuscation",
+    "simple"
+  ],
+  "author": "dvir hanum dvirhanum@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "javascript-obfuscator": "^4.1.0"
+  }
+}
