@@ -1,6 +1,6 @@
 {
   "name": "obfus-js",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "simple tool to obfuscate js files based on configuration file with input dir and output",
   "main": "index.js",
   "scripts": {
@@ -15,5 +15,9 @@
   "license": "ISC",
   "dependencies": {
     "javascript-obfuscator": "^4.1.0"
-  }
+  },
+  "bin": {
+    "obfuscate": "./bin/index.js"
+  },
+  "preferGlobal": true
 }

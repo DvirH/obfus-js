@@ -1,14 +1,19 @@
+#!/usr/bin/env node
+
 const fs = require("fs");
 const path = require('path')
 const JavaScriptObfuscator = require('javascript-obfuscator');
 let config = {}
 const configFile = process.argv[2]
 try {
-    config = JSON.parse(fs.readFileSync(configFile, { encoding: 'utf-8' }))
+    config = JSON.parse(fs.readFileSync(configFile ?? './obfus.config.json', { encoding: 'utf-8' }))
 }
 catch (err) {
-    throw new Error(`can't read config file, please verify that you supplied a valid json`)
+    console.log(`can't read obfusc.config.json file, please verify that you supplied a valid json`)
+    process.exit(1)
 }
+
+prepareOutputDir()
 
 const files = fs.readdirSync(config.sourceDir, {
     withFileTypes: true,
@@ -16,7 +21,6 @@ const files = fs.readdirSync(config.sourceDir, {
 })
 
 
-prepareOutputDir()
 
 for (const file of files) {
     if (config.fileTypes.indexOf(path.extname(file.name)) === -1) continue
@@ -28,11 +32,12 @@ for (const file of files) {
 
         var obfuscationResult = JavaScriptObfuscator.obfuscate(data, {
             target: 'node',
-            stringArray: false
+            stringArray: false,
+            ...(config.compiler ?? {})
         });
 
 
-        fs.writeFile(`${config.output}/${file.path}${file.name}`, obfuscationResult.getObfuscatedCode(), function (err) {
+        fs.writeFile(`${config.output}/${file.path}/${file.name}`, obfuscationResult.getObfuscatedCode(), function (err) {
             if (err) {
                 return console.log(err);
             }
