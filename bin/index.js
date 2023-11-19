@@ -21,11 +21,12 @@ const files = fs.readdirSync(config.sourceDir, {
 })
 
 
-
 for (const file of files) {
-    if (config.fileTypes.indexOf(path.extname(file.name)) === -1) continue
     if (config.exclude.some(i => file.path.indexOf(i) > -1)) continue
-    fs.readFile(`${file.path}${file.name}`, "UTF-8", function (err, data) {
+    if (!file.isFile()) continue
+    if (config.fileTypes.indexOf(path.extname(file.name)) === -1) continue
+    const relativePath = path.relative(config.sourceDir, file.path)
+    fs.readFile(`${file.path}/${file.name}`, "UTF-8", function (err, data) {
         if (err) {
             throw err;
         }
@@ -36,13 +37,17 @@ for (const file of files) {
             ...(config.compiler ?? {})
         });
 
+        const dir = path.join(config.output, relativePath)
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir)
+        }
 
-        fs.writeFile(`${config.output}/${file.path}/${file.name}`, obfuscationResult.getObfuscatedCode(), function (err) {
+        fs.writeFile(`${dir}/${file.name}`, obfuscationResult.getObfuscatedCode(), function (err) {
             if (err) {
                 return console.log(err);
             }
 
-            console.log(`The file ${file.path}${file.name} was saved!`);
+            console.log(`The file ${file.path}\${file.name} was saved!`);
         });
     });
 }
