@@ -47,7 +47,7 @@ for (const file of files) {
                 return console.log(err);
             }
 
-            console.log(`The file ${file.path}\${file.name} was saved!`);
+            console.log(`The file ${file.path}/${file.name} was saved!`);
         });
     });
 }
