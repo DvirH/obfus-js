@@ -1,0 +1,10 @@
+{
+    "sourceDir": "./dist",
+    "output": "./dist.obfuscated",
+    "fileTypes": [
+        ".js"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

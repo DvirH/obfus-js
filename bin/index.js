@@ -4,12 +4,16 @@ const fs = require("fs");
 const path = require('path')
 const JavaScriptObfuscator = require('javascript-obfuscator');
 let config = {}
-const configFile = process.argv[2]
+const command = process.argv[2] ?? ''
 try {
-    config = JSON.parse(fs.readFileSync(configFile ?? './obfus.config.json', { encoding: 'utf-8' }))
+    config = JSON.parse(fs.readFileSync(command.includes('--config') ? command.split('=').pop() : './obfus.config.json', { encoding: 'utf-8' }))
+    if (command.includes('init')) {
+        fs.writeFileSync('./obfus.config.json', fs.readFileSync(path.resolve(__dirname, '../config.json')))
+        return console.log('./obfus.config.json file has been created!')
+    }
 }
 catch (err) {
-    console.log(`can't read obfusc.config.json file, please verify that you supplied a valid json`)
+    console.log(`an error occured in obfuscation, see the following details: ${err}`)
     process.exit(1)
 }
 
