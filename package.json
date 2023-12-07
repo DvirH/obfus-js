@@ -19,5 +19,9 @@
   "bin": {
     "obfuscate": "./bin/index.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DvirH/obfus-js"
+  },
   "preferGlobal": true
 }
